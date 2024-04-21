@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton  } from '@clerk/nextjs'
 import NavBar from "@/components/ui/side-nav";
-
+import Script from 'next/script'
 
 
 import Header from '@/components/ui/header';
@@ -60,6 +60,13 @@ export default function RootLayout({
       </body>
     </html> */}
  <html lang="en">
+  <head>
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css" type="text/css" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js" async ></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css' rel='stylesheet' />
+  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.js" async ></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css" type="text/css" />
+    </head>
       <body className={`bg-white${inter.className}`}>
         <div className="flex">
           <SideNav />

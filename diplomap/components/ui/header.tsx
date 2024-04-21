@@ -8,6 +8,7 @@ import { useSelectedLayoutSegment } from 'next/navigation';
 import useScroll from '@/hooks/use-scroll';
 import { cn } from '@/lib/utils';
 
+
 const Header = () => {
   const scrolled = useScroll(5);
   const selectedLayout = useSelectedLayoutSegment();
@@ -40,7 +41,7 @@ const Header = () => {
 
         <div className="hidden md:block">
           <div className="h-8 w-8 rounded-full bg-zinc-300 flex items-center justify-center text-center">
-            <span className="font-semibold text-sm">HQ</span>
+            <span className="font-semibold text-sm"><UserButton/></span>
           </div>
         </div>
       </div>
