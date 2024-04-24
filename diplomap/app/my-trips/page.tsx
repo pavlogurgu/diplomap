@@ -86,11 +86,11 @@ const MyTrips = () => {
         ))}
       </ol> 
     </div>
-     <div>
+     {/* <div>
      <h3>Other Trips</h3>
-     <ol>
+     <ol> */}
        {/* {trip.id}{trip.destination}{trip.origin}{trip.distance}{trip.duration}{trip.transport_type}{trip.trip_id}{trip.user_id} */}
-       {otherTrips.map((trip) => (
+       {/* {otherTrips.map((trip) => (
          // <li key={trip.id}><Link href="/my-trips/edit-trip" key = {trip.trip_id}>id {trip.trip_id} {trip.origin} - {trip.destination}</Link></li>
          <li key={trip.id}> <Link
            href={`/my-trips/edit-trip?trip_id=${trip.trip_id}`}
@@ -100,7 +100,7 @@ const MyTrips = () => {
          </Link></li>
        ))}
      </ol>
-   </div>
+   </div> */}
    </>
   );
 };
