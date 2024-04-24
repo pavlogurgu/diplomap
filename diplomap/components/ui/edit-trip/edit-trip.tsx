@@ -118,7 +118,6 @@ export default function EditTrip() {
         distance: distance,
         duration: duration,
         transport_type: weight_name,
-        trip_id: uuidv4(),
         all_query: e.route[0],
       };
 
