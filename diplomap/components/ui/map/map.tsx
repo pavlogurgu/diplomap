@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { ChangeEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
 import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
@@ -6,6 +6,9 @@ import { useUser } from "@clerk/clerk-react";
 import { v4 as uuidv4 } from "uuid";
 import { createClient } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import CustomSelect from "../transport-select";
+
 
 // Initialize the client with your Supabase project URL and API key
 const supabase = createClient(
@@ -19,7 +22,8 @@ const tableName = "diplomap";
 export default function Map() {
   const { user } = useUser();
   const insertdataRef = useRef({});
-
+  const [isPrivate, setIsPrivate] = useState<boolean>(false);
+  const [route, setRoute] = useState<any>(null); // Додали стан для маршруту
   useEffect(() => {
     mapboxgl.accessToken = `${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`;
     const map = new mapboxgl.Map({
@@ -32,11 +36,13 @@ export default function Map() {
     const nav = new mapboxgl.NavigationControl();
     var directions = new MapboxDirections({
       accessToken: process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
+      unit: 'metric'
     });
 
     map.addControl(directions, "top-left");
     directions.on("route", (e: { route: any }) => {
       console.log("Route data:", e.route);
+      setRoute(e.route[0]);
       const originInput = document.querySelector(
         ".mapboxgl-ctrl-geocoder input[type='text']"
       ) as HTMLInputElement;
@@ -60,6 +66,7 @@ export default function Map() {
       };
 
       console.log("insertdata:", { insertdataRef });
+      console.log(route.distance)
     });
 
     return () => {
@@ -69,7 +76,7 @@ export default function Map() {
 
   const postData = async () => {
     const { data, error } = await supabase.from(tableName).upsert([
-      insertdataRef.current,
+      { ...insertdataRef.current, private: isPrivate },
     ]);
 
     if (error) {
@@ -79,10 +86,35 @@ export default function Map() {
 
     console.log("Data posted successfully:", data);
   };
-
+let tripLength = Number((route?.distance/ 1000).toFixed(2))
+  const handlePrivate = () => setIsPrivate(!isPrivate);
+  const options = [
+    { value: 'car', label: 'Машина', emissions: 0.028 },
+    { value: 'bus', label: 'Автобус', emissions: 0.004 },
+    { value: 'train', label: 'Поїзд', emissions: 0.002 },
+    { value: 'plane', label: 'Літак', emissions: 0.25 },
+    { value: 'motorcycle', label: 'Мотоцикл', emissions: 0.035 }
+  ];
   return (
     <>
       <div id="map" style={{ height: "500px", width: "500px" }}></div>
+      <div className="flex items-center space-x-2">
+        <Switch id="private"onClick={handlePrivate} />
+        <label htmlFor="private">Private</label>
+      </div>
+      <p>Кілометраж: {route && (route.distance/ 1000).toFixed(2)} км</p>
+      
+      {route && (
+      route.weight_name === "auto" ? (
+        <>
+        <CustomSelect options={options} tripLength={tripLength} />
+      </>
+      
+
+      ) : (
+        <p>Ви не робитимете викидів впродовж подорожі. Дякуємо, що турбуєтесь про довкілля!</p>
+      )
+    )}
       <Button onClick={postData}>Save Trip</Button>
     </>
   );
