@@ -1,7 +1,7 @@
 import { Icon } from '@iconify/react';
 
 import { SideNavItem } from './types';
-
+export const ITEMS_PER_PAGE = 10
 export const SIDENAV_ITEMS: SideNavItem[] = [
   {
     title: 'Home',
