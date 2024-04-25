@@ -272,9 +272,8 @@ export default function EditTrip() {
             про довкілля!
           </p>
         ))}
-      <Button onClick={updateData}>Update Trip</Button>
+      <Link href="/my-trips"><Button onClick={updateData}>Update Trip</Button></Link>
       <Link href="/my-trips"><Button onClick={deleteTrip}>Delete Trip</Button></Link>
-
     </>
   );
 }

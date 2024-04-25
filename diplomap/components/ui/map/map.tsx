@@ -8,7 +8,7 @@ import { createClient } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import CustomSelect from "../transport-select";
-
+import Link from "next/link";
 
 // Initialize the client with your Supabase project URL and API key
 const supabase = createClient(
@@ -115,7 +115,7 @@ let tripLength = Number((route?.distance/ 1000).toFixed(2))
         <p>Ви не робитимете викидів впродовж подорожі. Дякуємо, що турбуєтесь про довкілля!</p>
       )
     )}
-      <Button onClick={postData}>Save Trip</Button>
+        <Link href="/my-trips"><Button onClick={postData}>Save Trip</Button></Link>
     </>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Map from "../../components/ui/map/map";
+import Link from "next/link";
 
 const CreateTrip = () => {
   return (
@@ -8,6 +9,7 @@ const CreateTrip = () => {
       <span className="font-bold text-4xl">Create Trip</span>
       <Map />
       <div id="map"></div>
+      <Link href="/my-trips">Back</Link>
     </>
   );
 };
