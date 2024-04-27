@@ -14,7 +14,7 @@ interface Trip {
   transport_type: string;
   trip_id: string;
 }
-export const supabase = createClient(
+const supabase = createClient(
   `${process.env.NEXT_PUBLIC_SUPABASE_URL}`,
   `${process.env.NEXT_PUBLIC_SUPABASE_KEY}`
 );
