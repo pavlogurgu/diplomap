@@ -40,6 +40,17 @@ export default function Map() {
     });
 
     map.addControl(directions, "top-left");
+    map.addControl(
+      new mapboxgl.GeolocateControl({
+          positionOptions: {
+              enableHighAccuracy: true
+          },
+          // When active the map will receive updates to the device's location as it changes.
+          trackUserLocation: true,
+          // Draw an arrow next to the location dot to indicate which direction the device is heading.
+          showUserHeading: true
+      })
+  );
     directions.on("route", (e: { route: any }) => {
       console.log("Route data:", e.route);
       setRoute(e.route[0]);

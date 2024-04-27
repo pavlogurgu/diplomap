@@ -20,6 +20,7 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
+    "@sendbird/uikit-react": "^3.14.3",
     "@supabase/supabase-js": "^2.42.5",
     "@types/mapbox__mapbox-gl-geocoder": "^5.0.0",
     "class-variance-authority": "^0.7.0",

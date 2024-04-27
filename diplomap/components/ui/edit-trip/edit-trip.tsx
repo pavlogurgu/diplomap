@@ -93,6 +93,17 @@ export default function EditTrip() {
     });
 
     map.addControl(directions, "top-left");
+    map.addControl(
+      new mapboxgl.GeolocateControl({
+          positionOptions: {
+              enableHighAccuracy: true
+          },
+          // When active the map will receive updates to the device's location as it changes.
+          trackUserLocation: true,
+          // Draw an arrow next to the location dot to indicate which direction the device is heading.
+          showUserHeading: true
+      })
+  );
     map.on("load", function () {
       directions.setOrigin(`${tripDetail.origin}`);
       directions.setDestination(`${tripDetail.destination}`);
