@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useUser } from "@clerk/clerk-react";
+import { useTheme } from "next-themes";
 
 interface Trip {
   id: number;
@@ -23,13 +24,10 @@ const MyTrips = () => {
   const { user } = useUser();
   const userId = user?.id;
   const [trips, setTrips] = useState<Trip[]>([]);
-  const [otherTrips, setOtherTrips] = useState<Trip[]>([]);
-
-
+  const { theme } = useTheme();
   useEffect(() => {
     const fetchTrips = async () => {
       try {
-        // Запит до Supabase для отримання списку подорожей для певного user_id
         const { data, error } = await supabase
           .from("diplomap")
           .select("*")
@@ -42,66 +40,30 @@ const MyTrips = () => {
         console.error("Error fetching trips:", error);
       }
     };
-
     if (userId) {
       fetchTrips();
     }
-    // const fetchOtherTrips = async () => {
-    //   try {
-    //     // Запит до Supabase для отримання списку подорожей для певного user_id
-    //     const { data, error } = await supabase
-    //       .from("diplomap")
-    //       .select("*")
-    //       .eq("user_id", userId)
-    //       .eq("private", false);
-    //     if (error) {
-    //       throw error;
-    //     }
-    //     setOtherTrips(data);
-    //   } catch (error) {
-    //     console.error("Error fetching trips:", error);
-    //   }
-    // };
-    
-    // if (userId) {
-    //   fetchOtherTrips();
-    // }
-    
   }, [userId]);
-
   return (
     <>
-    <div>
-      <h2>Trips for User {userId}</h2>
-      <ol>
-        {/* {trip.id}{trip.destination}{trip.origin}{trip.distance}{trip.duration}{trip.transport_type}{trip.trip_id}{trip.user_id} */}
-        {trips.map((trip) => (
-          // <li key={trip.id}><Link href="/my-trips/edit-trip" key = {trip.trip_id}>id {trip.trip_id} {trip.origin} - {trip.destination}</Link></li>
-          <li key={trip.id}> <Link
-            href={`/my-trips/edit-trip?trip_id=${trip.trip_id}`}
-            key={trip.trip_id}
-          >
-            id {trip.trip_id} {trip.origin} - {trip.destination}
-          </Link></li>
-        ))}
-      </ol> 
-    </div>
-     {/* <div>
-     <h3>Other Trips</h3>
-     <ol> */}
-       {/* {trip.id}{trip.destination}{trip.origin}{trip.distance}{trip.duration}{trip.transport_type}{trip.trip_id}{trip.user_id} */}
-       {/* {otherTrips.map((trip) => (
-         // <li key={trip.id}><Link href="/my-trips/edit-trip" key = {trip.trip_id}>id {trip.trip_id} {trip.origin} - {trip.destination}</Link></li>
-         <li key={trip.id}> <Link
-           href={`/my-trips/edit-trip?trip_id=${trip.trip_id}`}
-           key={trip.trip_id}
-         >
-           id {trip.trip_id} {trip.origin} - {trip.destination} UID{trip.user_id}
-         </Link></li>
-       ))}
-     </ol>
-   </div> */}
-   </>
+      <div className="mt-4">
+        <h2 className="font-semibold text-4xl mb-4">Ваші подорожі:</h2>
+        <ol className="grid gap-4">
+          {trips.map((trip) => (
+            <li key={trip.id}>
+              <Link
+                href={`/my-trips/edit-trip?trip_id=${trip.trip_id}`}
+                className={`${
+                  theme === "dark" ? "bg-black" : "bg-white"
+                } block border-green-500 border p-2 rounded-lg font-semibold text-lg hover:text-green-600`}
+              >
+                {trip.origin} - {trip.destination}
+              </Link>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </>
   );
 };
 

@@ -11,7 +11,6 @@ export default function ClerkCheck() {
   useEffect(() => {
     const addOrUpdateUser = async () => {
       try {
-        // Перевіряємо, чи існує запис з вказаним user_id
         const { data: existingUserData, error: existingUserError } =
           await supabase
             .from("diplomap-users")
@@ -21,8 +20,6 @@ export default function ClerkCheck() {
         if (existingUserError) {
           throw existingUserError;
         }
-
-        // Якщо запис не знайдено, додаємо новий запис
         if (!existingUserData || existingUserData.length === 0) {
           const { data: newUser, error: insertError } = await supabase
             .from("diplomap-users")
@@ -40,10 +37,7 @@ export default function ClerkCheck() {
           if (insertError) {
             throw insertError;
           }
-
-          // console.log("New user added:", newUser);
         } else {
-          // console.log("User already exists:", existingUserData);
         }
       } catch (error) {
         console.error("Error adding or updating user:", error);

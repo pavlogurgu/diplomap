@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import EditTrip from "@/components/ui/edit-trip/edit-trip";
+import { Button } from "@/components/ui/button";
 interface Trip {
   id: number;
   destination: string;
@@ -13,29 +14,22 @@ interface Trip {
   duration: string;
   transport_type: string;
   trip_id: string;
-  all_query: object,
+  all_query: object;
 }
-
-// Ініціалізуємо клієнт supabase
 const supabase = createClient(
   `${process.env.NEXT_PUBLIC_SUPABASE_URL}`,
   `${process.env.NEXT_PUBLIC_SUPABASE_KEY}`
 );
 
 const EditTripPage: React.FC = () => {
-  // Отримуємо trip_id з параметрів запиту
   const router = useSearchParams();
   const tripId = router.get("trip_id");
-
-  // Створюємо стан для зберігання деталей подорожі
   const [tripDetail, setTripDetail] = useState<Trip | null>(null);
 
-  // Ефект для отримання деталей конкретної подорожі
   useEffect(() => {
     const fetchTripDetail = async () => {
       try {
-        if (!tripId) return; // Перевіряємо, чи tripId не є null або undefined
-        // Запит до Supabase для отримання деталей конкретної подорожі за trip_id
+        if (!tripId) return;
         const { data, error } = await supabase
           .from("diplomap")
           .select("*")
@@ -44,10 +38,8 @@ const EditTripPage: React.FC = () => {
           throw error;
         }
         if (data && data.length > 0) {
-          // Якщо є дані, встановлюємо перший елемент масиву даних як tripDetail
           setTripDetail(data[0]);
         } else {
-          // Якщо немає даних, встановлюємо null для tripDetail
           setTripDetail(null);
         }
       } catch (error) {
@@ -57,34 +49,32 @@ const EditTripPage: React.FC = () => {
 
     fetchTripDetail();
   }, [tripId]);
-  console.log({tripDetail})
 
-  // Повертаємо компонент
   return (
     <>
-      <h2>Edit Trip</h2>
-      {/* Перевіряємо, чи tripDetail існує, і виводимо відповідну інформацію */}
+      <h2 className="font-semibold text-4xl mb-4">Редагувати подорож</h2>
       {tripDetail ? (
         <>
-          <p>Trip ID: {tripDetail.trip_id}</p>
-          <p>Origin: {tripDetail.origin}</p>
-          <p>Destination: {tripDetail.destination}</p>
-          <p>id: {tripDetail.id}</p>
-          <p>user_id: {tripDetail.user_id}</p>
-          <p>distance: {tripDetail.distance}</p>
-          <p>duration: {tripDetail.duration}</p>
-          <p>transport_type: {tripDetail.transport_type}</p>
-          {/* <p>transport_type: {tripDetail.all_query}</p> */}
-
-          {/* Додайте інші поля для відображення деталей подорожі, якщо потрібно */}
-
-        <EditTrip/>
-          <Link href="/my-trips">Back</Link>
+          <p className="font-semibold text-l">
+            Маршрут: {tripDetail.origin} - {tripDetail.destination}
+          </p>
+          <p className="font-semibold text-l">
+            ID подорожі: {tripDetail.trip_id}
+          </p>
+          <p className="font-semibold text-l">
+            Відстань: {Number(Number(tripDetail.distance) / 1000).toFixed(2)} км
+          </p>
+          <EditTrip />
+          <Link href="/my-trips">
+            <Button>Back</Button>
+          </Link>
         </>
       ) : (
         <>
-          <p>Loading...</p>
-          <Link href="/my-trips">Back</Link>
+          <p className="font-semibold text-l">Loading...</p>
+          <Link href="/my-trips">
+            <Button>Back</Button>
+          </Link>
         </>
       )}
     </>

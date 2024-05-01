@@ -1,35 +1,34 @@
 import { Icon } from '@iconify/react';
-
 import { SideNavItem } from './types';
 export const ITEMS_PER_PAGE = 10
 export const SIDENAV_ITEMS: SideNavItem[] = [
   {
-    title: 'Home',
+    title: 'Головна',
     path: '/',
     icon: <Icon icon="lucide:home" width="24" height="24" />,
   },
   {
-    title: 'Create Trip',
+    title: 'Створити подорож',
     path: '/create',
-    icon: <Icon icon="lucide:folder" width="24" height="24" />,
+    icon: <Icon icon="ant-design:plus-circle-outlined" width="24" height="24" />,
   },
   {
-    title: 'Chat',
+    title: 'Чат',
     path: '/chat',
-    icon: <Icon icon="lucide:folder" width="24" height="24" />,
+    icon: <Icon icon="majesticons:chats-2-line" width="24" height="24" />,
   },
   {
-    title: 'My Trips',
+    title: 'Мої подорожі',
     path: '/my-trips',
-    icon: <Icon icon="lucide:help-circle" width="24" height="24" />,
+    icon: <Icon icon="cil:compass" width="24" height="24" />,
   },
   {
-    title: 'Friends',
+    title: 'Спільнота',
     path: '/friends',
-    icon: <Icon icon="lucide:mail" width="24" height="24" />,
+    icon: <Icon icon="majesticons:users-line" width="24" height="24" />,
   },
   {
-    title: 'Settings',
+    title: 'Налаштування',
     path: '/settings',
     icon: <Icon icon="lucide:settings" width="24" height="24" />,
   },

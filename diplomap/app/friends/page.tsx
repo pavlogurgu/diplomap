@@ -1,88 +1,11 @@
-// "use client";
-// import Link from "next/link";
-// import { useEffect, useState } from "react";
-// import { createClient } from "@supabase/supabase-js";
-// import { useUser } from "@clerk/clerk-react";
-// import React from 'react';
-// import Supabase from '../supabase/page';
-
-// interface People {
-//   id: number;
-//   username: string;
-//   firstName: string;
-//   lastName: string;
-//   imageURL: string;
-//   clerk_id: string;
-//   email: string;
-// }
-// export const supabase = createClient(
-//   `${process.env.NEXT_PUBLIC_SUPABASE_URL}`,
-//   `${process.env.NEXT_PUBLIC_SUPABASE_KEY}`
-// );
-
-// const Friends = () => {
-//   const { user } = useUser();
-//   const userId = user?.id;
-//   const [people, setPeople] = useState<People[]>([]);
-
-
-
-//   useEffect(() => {
-//     const fetchTrips = async () => {
-//       try {
-//         // Запит до Supabase для отримання списку подорожей для певного user_id
-//         const { data, error } = await supabase
-//           .from("diplomap-users")
-//           .select("*")
-//           .neq("clerk_id", userId);
-//         if (error) {
-//           throw error;
-//         }
-//         setPeople(data);
-//       } catch (error) {
-//         console.error("Error fetching trips:", error);
-//       }
-//     };
-
-//     if (userId) {
-//       fetchTrips();
-//     }
-
-    
-//   }, [userId]);
-
-//   return (
-//     <>
-//     <div>
-
-//       <span className="font-bold text-4xl">People</span>
-//       <ol>
-       
-//         {people.map((person) => (
-        
-//           <li key={person.id}> <Link
-//             href={`/friends/friend-page?username=${person.username}`}
-//             key={person.username}
-//           >
-//             id {person.id} {person.firstName} - {person.lastName}- {person.username}
-//           </Link></li>
-//         ))}
-//       </ol> 
-//     </div>
-//      <div>
-//    </div>
-//    </>
-//   );
-// };
-
-// export default Friends;
-
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 import { useUser } from "@clerk/clerk-react";
-import Search from '../../components/ui/search';
+import Search from "../../components/ui/search";
+import Image from "next/image";
+import { useTheme } from "next-themes";
 
 interface People {
   id: number;
@@ -99,11 +22,16 @@ const supabase = createClient(
   `${process.env.NEXT_PUBLIC_SUPABASE_KEY}`
 );
 
-export default function Friends({ searchParams }: { searchParams?: { query?: string; page?: string } }) {
-  const query = searchParams?.query || '';
+export default function Friends({
+  searchParams,
+}: {
+  searchParams?: { query?: string; page?: string };
+}) {
+  const query = searchParams?.query || "";
   const [people, setPeople] = useState<People[]>([]);
   const { user } = useUser();
   const userId = user?.id;
+  const { theme } = useTheme();
 
   useEffect(() => {
     const fetchPeople = async () => {
@@ -115,7 +43,6 @@ export default function Friends({ searchParams }: { searchParams?: { query?: str
             .select("*")
             .neq("clerk_id", userId)
             .ilike("username", `%${query}%`);
-           
         } else {
           fetchedPeople = await supabase
             .from("diplomap-users")
@@ -135,14 +62,31 @@ export default function Friends({ searchParams }: { searchParams?: { query?: str
 
   return (
     <>
-      <div>
-        <h1 className="font-bold text-4xl">Community</h1>
-        <Search placeholder="Search friends..." />
-        <ol>
+      <div className="mt-4">
+        <h2 className="font-semibold text-4xl mb-4">Спільнота</h2>
+        <div className="mb-4">
+          <Search placeholder="Search friends..." />
+        </div>
+        <ol className="grid gap-4">
           {people.map((person) => (
-            <li key={person.id}>
-              <Link href={`/friends/friend-page?username=${person.username}`}>
-                {person.username} - {person.firstName} {person.lastName}
+            <li
+              key={person.id}
+              className={`${
+                theme === "dark" ? "bg-black" : "bg-white"
+              } flex border-green-500 border p-2 rounded-lg font-semibold text-lg hover:text-green-600`}
+            >
+              <Image
+                src={person.imageURL}
+                alt="Profile"
+                width={32}
+                height={32}
+                className="rounded-full mr-2"
+              />
+              <Link
+                href={`/friends/friend-page?username=${person.username}`}
+                className="flex-grow"
+              >
+                {person.username}
               </Link>
             </li>
           ))}
