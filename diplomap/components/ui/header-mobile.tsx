@@ -1,14 +1,15 @@
-'use client';
+"use client";
 
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
-
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-
-import { SIDENAV_ITEMS } from '@/constants';
-import { SideNavItem } from '@/types';
-import { Icon } from '@iconify/react';
-import { motion, useCycle } from 'framer-motion';
+import React, { ReactNode, useEffect, useRef, useState } from "react";
+import { useTheme } from "next-themes";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { SIDENAV_ITEMS } from "@/constants";
+import { SideNavItem } from "@/types";
+import { Icon } from "@iconify/react";
+import { motion, useCycle } from "framer-motion";
+import { ModeToggle } from "../mode-toggle";
 
 type MenuItemWithSubMenuProps = {
   item: SideNavItem;
@@ -19,15 +20,15 @@ const sidebar = {
   open: (height = 1000) => ({
     clipPath: `circle(${height * 2 + 200}px at 100% 0)`,
     transition: {
-      type: 'spring',
+      type: "spring",
       stiffness: 20,
       restDelta: 2,
     },
   }),
   closed: {
-    clipPath: 'circle(0px at 100% 0)',
+    clipPath: "circle(0px at 100% 0)",
     transition: {
-      type: 'spring',
+      type: "spring",
       stiffness: 400,
       damping: 40,
     },
@@ -39,27 +40,31 @@ const HeaderMobile = () => {
   const containerRef = useRef(null);
   const { height } = useDimensions(containerRef);
   const [isOpen, toggleOpen] = useCycle(false, true);
-
+  const { theme } = useTheme();
   return (
     <motion.nav
       initial={false}
-      animate={isOpen ? 'open' : 'closed'}
+      animate={isOpen ? "open" : "closed"}
       custom={height}
       className={`fixed inset-0 z-50 w-full md:hidden ${
-        isOpen ? '' : 'pointer-events-none'
+        isOpen ? "" : "pointer-events-none"
       }`}
       ref={containerRef}
     >
       <motion.div
-        className="absolute inset-0 right-0 w-full bg-white"
+        className={cn("absolute inset-0 right-0 w-full bg-white", {
+          "bg-black": theme === "dark",
+        })}
         variants={sidebar}
       />
+
       <motion.ul
         variants={variants}
         className="absolute grid w-full gap-3 px-10 py-16 max-h-screen overflow-y-auto"
       >
+        {isOpen && <ModeToggle />}
         {SIDENAV_ITEMS.map((item, idx) => {
-          const isLastItem = idx === SIDENAV_ITEMS.length - 1; // Check if it's the last item
+          const isLastItem = idx === SIDENAV_ITEMS.length - 1;
 
           return (
             <div key={idx}>
@@ -71,7 +76,7 @@ const HeaderMobile = () => {
                     href={item.path}
                     onClick={() => toggleOpen()}
                     className={`flex w-full text-2xl ${
-                      item.path === pathname ? 'font-bold' : ''
+                      item.path === pathname ? "font-bold" : ""
                     }`}
                   >
                     {item.title}
@@ -80,7 +85,11 @@ const HeaderMobile = () => {
               )}
 
               {!isLastItem && (
-                <MenuItem className="my-3 h-px w-full bg-gray-300" />
+                <MenuItem
+                  className={cn("my-3 h-px w-full bg-gray-300", {
+                    "bg-gray-600": theme === "dark",
+                  })}
+                />
               )}
             </div>
           );
@@ -101,8 +110,8 @@ const MenuToggle = ({ toggle }: { toggle: any }) => (
     <svg width="23" height="23" viewBox="0 0 23 23">
       <Path
         variants={{
-          closed: { d: 'M 2 2.5 L 20 2.5' },
-          open: { d: 'M 3 16.5 L 17 2.5' },
+          closed: { d: "M 2 2.5 L 20 2.5" },
+          open: { d: "M 3 16.5 L 17 2.5" },
         }}
       />
       <Path
@@ -115,8 +124,8 @@ const MenuToggle = ({ toggle }: { toggle: any }) => (
       />
       <Path
         variants={{
-          closed: { d: 'M 2 16.346 L 20 16.346' },
-          open: { d: 'M 3 2.5 L 17 16.346' },
+          closed: { d: "M 2 16.346 L 20 16.346" },
+          open: { d: "M 3 2.5 L 17 16.346" },
         }}
       />
     </svg>
@@ -163,11 +172,11 @@ const MenuItemWithSubMenu: React.FC<MenuItemWithSubMenuProps> = ({
         >
           <div className="flex flex-row justify-between w-full items-center">
             <span
-              className={`${pathname.includes(item.path) ? 'font-bold' : ''}`}
+              className={`${pathname.includes(item.path) ? "font-bold" : ""}`}
             >
               {item.title}
             </span>
-            <div className={`${subMenuOpen && 'rotate-180'}`}>
+            <div className={`${subMenuOpen && "rotate-180"}`}>
               <Icon icon="lucide:chevron-down" width="24" height="24" />
             </div>
           </div>
@@ -183,7 +192,7 @@ const MenuItemWithSubMenu: React.FC<MenuItemWithSubMenuProps> = ({
                     href={subItem.path}
                     onClick={() => toggleOpen()}
                     className={` ${
-                      subItem.path === pathname ? 'font-bold' : ''
+                      subItem.path === pathname ? "font-bold" : ""
                     }`}
                   >
                     {subItem.title}
@@ -233,7 +242,6 @@ const useDimensions = (ref: any) => {
       dimensions.current.width = ref.current.offsetWidth;
       dimensions.current.height = ref.current.offsetHeight;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref]);
 
   return dimensions.current;

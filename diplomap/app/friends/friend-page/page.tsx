@@ -3,6 +3,9 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { useTheme } from "next-themes";
 
 interface People {
   id: number;
@@ -12,6 +15,7 @@ interface People {
   imageURL: string;
   clerk_id: string;
   email: string;
+  description: string;
 }
 interface Trip {
   id: number;
@@ -24,28 +28,24 @@ interface Trip {
   trip_id: string;
   all_query: object;
 }
-// Ініціалізуємо клієнт supabase
+
 const supabase = createClient(
   `${process.env.NEXT_PUBLIC_SUPABASE_URL}`,
   `${process.env.NEXT_PUBLIC_SUPABASE_KEY}`
 );
 
 const EditTripPage: React.FC = () => {
-  // Отримуємо trip_id з параметрів запиту
   const router = useSearchParams();
   const friendUsername = router.get("username");
-
-  // Створюємо стан для зберігання деталей подорожі
+  const { theme } = useTheme();
   const [personDetail, setPersonDetail] = useState<People | null>(null);
-  //   const [personTrips, setPersonTrips] = useState<Trip | null>(null);
   const [personTrips, setPersonTrips] = useState<Trip[] | null>(null);
 
-  // Ефект для отримання деталей конкретної подорожі
   useEffect(() => {
     const fetchUserDetail = async () => {
       try {
-        if (!friendUsername) return; // Перевіряємо, чи tripId не є null або undefined
-        // Запит до Supabase для отримання деталей конкретної подорожі за trip_id
+        if (!friendUsername) return;
+
         const { data, error } = await supabase
           .from("diplomap-users")
           .select("*")
@@ -54,10 +54,8 @@ const EditTripPage: React.FC = () => {
           throw error;
         }
         if (data && data.length > 0) {
-          // Якщо є дані, встановлюємо перший елемент масиву даних як tripDetail
           setPersonDetail(data[0]);
         } else {
-          // Якщо немає даних, встановлюємо null для tripDetail
           setPersonDetail(null);
         }
       } catch (error) {
@@ -67,13 +65,11 @@ const EditTripPage: React.FC = () => {
 
     fetchUserDetail();
   }, [friendUsername]);
-  console.log({ personDetail });
 
   useEffect(() => {
     const fetchUserTrips = async () => {
       try {
-        if (!personDetail?.clerk_id) return; // Перевіряємо, чи tripId не є null або undefined
-        // Запит до Supabase для отримання деталей конкретної подорожі за trip_id
+        if (!personDetail?.clerk_id) return;
         const { data, error } = await supabase
           .from("diplomap")
           .select("*")
@@ -84,11 +80,8 @@ const EditTripPage: React.FC = () => {
           throw error;
         }
         if (data && data.length > 0) {
-          // Якщо є дані, встановлюємо перший елемент масиву даних як tripDetail
-          //   setPersonTrips(data);
           setPersonTrips(data as Trip[]);
         } else {
-          // Якщо немає даних, встановлюємо null для tripDetail
           setPersonTrips(null);
         }
       } catch (error) {
@@ -98,52 +91,60 @@ const EditTripPage: React.FC = () => {
 
     fetchUserTrips();
   }, [personDetail?.clerk_id]);
-  console.log({ personTrips });
-
-  // Повертаємо компонент
   return (
     <>
-      <h2>User Profile</h2>
-      {/* Перевіряємо, чи tripDetail існує, і виводимо відповідну інформацію */}
+      <h2 className="font-semibold text-4xl mt-4 mb-4">
+        Профіль {friendUsername}
+      </h2>
       {[personDetail, personTrips] ? (
         <>
-          <p>ID: {personDetail?.id}</p>
-          <p>username: {personDetail?.username}</p>
-          <p>firstName: {personDetail?.firstName}</p>
-          <p>lastName: {personDetail?.lastName}</p>
-          <p>imageURL: {personDetail?.imageURL}</p>
-          <p>clerk_id: {personDetail?.clerk_id}</p>
-          <p>email: {personDetail?.email}</p>
-          <h3>Shared Trips</h3>
-          <ol>
+          <div className="flex items-center mt-4 mb-4"></div>
+          {personDetail && (
+            <>
+              <Image
+                src={personDetail?.imageURL}
+                alt="Profile"
+                width={80}
+                height={80}
+                className="rounded-full mr-4"
+              />
+              <h3 className="font-semibold text-4xl">
+                {personDetail.firstName} {personDetail.lastName}
+              </h3>
+              <h3 className="font-semibold text-xl mt-4 mb-2">Про мене: </h3>
+              <p className="font-semibold text-l">{personDetail.description}</p>
+            </>
+          )}
+          <h3 className="font-semibold text-2xl mt-4 mb-2">Shared Trips</h3>
+          <ol className="grid gap-4">
             {personTrips?.map((trip) => (
               <li key={trip.trip_id}>
                 <Link
                   href={`/my-trips/edit-trip?trip_id=${trip.trip_id}`}
-                  key={trip.trip_id}
+                  className={`${
+                    theme === "dark" ? "bg-black" : "bg-white"
+                  } block border-green-500 border p-2 rounded-lg font-semibold text-lg hover:text-green-600`}
                 >
                   <p>
                     {trip.origin} - {trip.destination}
                   </p>
-
-                  {/* <p>ID: {trip.id}</p>
-              <p>destination: {trip.destination}</p>
-              <p>origin: {trip.origin}</p>
-              <p>user_id: {trip.user_id}</p>
-              <p>distance: {trip.distance}</p>
-              <p>duration: {trip.duration}</p>
-              <p>transport_type: {trip.transport_type}</p>
-              <p>trip_id: {trip.trip_id}</p> */}
                 </Link>
               </li>
             ))}
           </ol>
-          <Link href="/friends">Back</Link>
+          <Link
+            href="/friends"
+            className="mt-4 inline-block text-blue-500 hover:underline"
+          >
+            <Button>Back</Button>
+          </Link>
         </>
       ) : (
         <>
           <p>Loading...</p>
-          <Link href="/friends">Back</Link>
+          <Link href="/friends">
+            <Button>Back</Button>
+          </Link>
         </>
       )}
     </>
