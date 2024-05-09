@@ -9,7 +9,7 @@ export default function Chat() {
   const userId = String(user?.username) || "defaultUserId";
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: "100%", height: "93vh" }}>
       <SendbirdApp
         appId="589CC202-EAD8-40CD-AABE-29ACA280FC24"
         userId={userId}
