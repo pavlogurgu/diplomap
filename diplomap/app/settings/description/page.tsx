@@ -69,9 +69,9 @@ export default function AboutMe() {
         <p className="font-semibold text-l">{myDescription}</p>
       )}
       {isEditing ? (
-        <Button onClick={updateData}>Зберегти</Button>
+        <Button onClick={updateData}>Save</Button>
       ) : (
-        <Button onClick={() => setIsEditing(true)}>Редагувати опис</Button>
+        <Button onClick={() => setIsEditing(true)}>Edit description</Button>
       )}
     </>
   );

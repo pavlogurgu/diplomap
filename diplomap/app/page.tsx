@@ -25,18 +25,18 @@ export default function Home() {
       <div className="absolute inset-0 bg-black opacity-25 z-5"></div>
       <div className="absolute inset-0 z-10 min-h-screen flex flex-col justify-center items-center space-y-8">
         <h2 className="font-semibold text-4xl text-center text-white">
-          Екологічні подорожі - це{" "}
+        Ecological travel is {" "}
           <span className="diplomap-logo font-light text-5xl text-white ">
             diplomap
           </span>
           !
         </h2>
         <h3 className="font-semibold text-4xl text-center text-white">
-          Вітаю, {user?.username}!
+          Hello, {user?.username}!
         </h3>
         <div className="flex justify-center space-x-4">
           <Link href="/create">
-            <Button>Створити подорож</Button>
+            <Button>Create trip</Button>
           </Link>
           <Link
             href="https://noir-weather.netlify.app/"
@@ -44,7 +44,7 @@ export default function Home() {
             rel="noopener noreferrer"
           >
             <Button>
-              Прогноз погоди<span className="icon-[mdi:external-link]"></span>
+              Weather forecast<span className="icon-[mdi:external-link]"></span>
             </Button>
           </Link>
         </div>

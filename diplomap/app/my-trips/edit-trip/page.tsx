@@ -52,17 +52,17 @@ const EditTripPage: React.FC = () => {
 
   return (
     <>
-      <h2 className="font-semibold text-4xl mb-4">Редагувати подорож</h2>
+      <h2 className="font-semibold text-4xl mb-4">Edit trip</h2>
       {tripDetail ? (
         <>
           <p className="font-semibold text-l">
-            Маршрут: {tripDetail.origin} - {tripDetail.destination}
+            Route: {tripDetail.origin} - {tripDetail.destination}
           </p>
           <p className="font-semibold text-l">
-            ID подорожі: {tripDetail.trip_id}
+            Trip ID: {tripDetail.trip_id}
           </p>
           <p className="font-semibold text-l">
-            Відстань: {Number(Number(tripDetail.distance) / 1000).toFixed(2)} км
+            Distance: {Number(Number(tripDetail.distance) / 1000).toFixed(2)} km
           </p>
           <EditTrip />
           <Link href="/my-trips">

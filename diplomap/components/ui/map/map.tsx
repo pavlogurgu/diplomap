@@ -94,11 +94,11 @@ export default function Map() {
   let tripLength = Number((route?.distance / 1000).toFixed(2));
   const handlePrivate = () => setIsPrivate(!isPrivate);
   const options = [
-    { value: "car", label: "Машина", emissions: 0.028 },
-    { value: "bus", label: "Автобус", emissions: 0.004 },
-    { value: "train", label: "Поїзд", emissions: 0.002 },
-    { value: "plane", label: "Літак", emissions: 0.25 },
-    { value: "motorcycle", label: "Мотоцикл", emissions: 0.035 },
+    { value: "car", label: "Car", emissions: 0.028 },
+    { value: "bus", label: "Bus", emissions: 0.004 },
+    { value: "train", label: "Train", emissions: 0.002 },
+    { value: "plane", label: "Plane", emissions: 0.25 },
+    { value: "motorcycle", label: "Motorcycle", emissions: 0.035 },
   ];
   return (
     <>
@@ -110,7 +110,7 @@ export default function Map() {
         </label>
       </div>
       <p className="font-semibold text-l">
-        Кілометраж: {route && (route.distance / 1000).toFixed(2)} км
+        Distance: {route && (route.distance / 1000).toFixed(2)} km
       </p>
       {route &&
         (route.weight_name === "auto" ? (
@@ -119,8 +119,7 @@ export default function Map() {
           </>
         ) : (
           <p className="font-semibold text-l">
-            Ви не робитимете викидів впродовж подорожі. Дякуємо, що турбуєтесь
-            про довкілля!
+         You will produce no emissions during the trip. Thank you for caring about the environment!
           </p>
         ))}
       <Link href="/my-trips">
