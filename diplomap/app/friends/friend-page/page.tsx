@@ -94,7 +94,7 @@ const EditTripPage: React.FC = () => {
   return (
     <>
       <h2 className="font-semibold text-4xl mt-4 mb-4">
-        Профіль {friendUsername}
+        {friendUsername} profile
       </h2>
       {[personDetail, personTrips] ? (
         <>
@@ -111,7 +111,7 @@ const EditTripPage: React.FC = () => {
               <h3 className="font-semibold text-4xl">
                 {personDetail.firstName} {personDetail.lastName}
               </h3>
-              <h3 className="font-semibold text-xl mt-4 mb-2">Про мене: </h3>
+              <h3 className="font-semibold text-xl mt-4 mb-2">About me: </h3>
               <p className="font-semibold text-l">{personDetail.description}</p>
             </>
           )}

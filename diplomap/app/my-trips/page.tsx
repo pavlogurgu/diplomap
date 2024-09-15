@@ -47,7 +47,7 @@ const MyTrips = () => {
   return (
     <>
       <div className="mt-4">
-        <h2 className="font-semibold text-4xl mb-4">Ваші подорожі:</h2>
+        <h2 className="font-semibold text-4xl mb-4">Your trips:</h2>
         <ol className="grid gap-4">
           {trips.map((trip) => (
             <li key={trip.id}>

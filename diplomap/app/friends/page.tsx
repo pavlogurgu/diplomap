@@ -63,7 +63,7 @@ export default function Friends({
   return (
     <>
       <div className="mt-4">
-        <h2 className="font-semibold text-4xl mb-4">Спільнота</h2>
+        <h2 className="font-semibold text-4xl mb-4">Community</h2>
         <div className="mb-4">
           <Search placeholder="Search friends..." />
         </div>

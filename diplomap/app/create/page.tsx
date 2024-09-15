@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 const CreateTrip = () => {
   return (
     <>
-      <span className="font-semibold text-4xl mb-4">Створити подорож</span>
+      <span className="font-semibold text-4xl mb-4">Create trip</span>
       <Map />
       <div id="map"></div>
       <Link href="/my-trips">

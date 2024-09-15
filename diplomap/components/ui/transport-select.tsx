@@ -40,7 +40,7 @@ const CustomSelect = ({ options, tripLength }: Props) => {
     <div>
       <select value={selectedValue} onChange={handleSelectChange}>
         <option value="" disabled hidden className="font-semibold text-l">
-          Виберіть транспорт
+          Choose transport
         </option>
         {options.map((option, index) => (
           <option
@@ -54,7 +54,7 @@ const CustomSelect = ({ options, tripLength }: Props) => {
       </select>
       {selectedValue && (
         <p className="flex font-semibold text-l">
-          Викидів СО2 для цієї подорожі близько {emcount} кг на людину{" "}
+          You will produce about {emcount} kg of CO2 during this trip{" "}
           <span style={indicatorStyle}></span>
         </p>
       )}
