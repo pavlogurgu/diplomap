@@ -17,7 +17,7 @@ export default function Home() {
         muted
       >
         <source
-          src="https://assets.mixkit.co/videos/preview/mixkit-going-down-a-curved-highway-through-a-mountain-range-41576-large.mp4"
+          src="https://cdn.pixabay.com/video/2024/02/07/199689-910996021_large.mp4"
           type="video/mp4"
         />
         Your browser does not support the video tag.
@@ -25,7 +25,7 @@ export default function Home() {
       <div className="absolute inset-0 bg-black opacity-25 z-5"></div>
       <div className="absolute inset-0 z-10 min-h-screen flex flex-col justify-center items-center space-y-8">
         <h2 className="font-semibold text-4xl text-center text-white">
-        Ecological travel is {" "}
+          Ecological travel is{" "}
           <span className="diplomap-logo font-light text-5xl text-white ">
             diplomap
           </span>
